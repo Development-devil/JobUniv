@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "357774427239",
+    "project_id": "jobuniv-315d1",
+    "storage_bucket": "jobuniv-315d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357774427239:android:93aa7691ef73359f8080c2",
+        "android_client_info": {
+          "package_name": "com.mycompany.devdevil"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNje6wyO5i-igZdltmjgmclcqJdxOksO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
