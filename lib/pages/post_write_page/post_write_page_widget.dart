@@ -1,3 +1,5 @@
+import '/auth/firebase_auth/auth_util.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_radio_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -71,8 +73,8 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
               color: FlutterFlowTheme.of(context).secondaryText,
               size: 24.0,
             ),
-            onPressed: () {
-              print('IconButton pressed ...');
+            onPressed: () async {
+              context.safePop();
             },
           ),
           title: Column(
@@ -102,8 +104,24 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
             Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 12.0, 12.0),
               child: FFButtonWidget(
-                onPressed: () {
-                  print('Button pressed ...');
+                onPressed: () async {
+                  await PostpageRecord.collection.doc().set({
+                    ...createPostpageRecordData(
+                      category: _model.radioButtonValue != null &&
+                          _model.radioButtonValue != '',
+                      title: _model.textController1.text,
+                      contents: _model.textController2.text,
+                      careerFields: _model.textController3.text,
+                      count: int.tryParse(_model.textController4.text),
+                      requiredSkills: _model.textController5.text,
+                      writer: currentUserDisplayName,
+                    ),
+                    ...mapToFirestore(
+                      {
+                        'day': FieldValue.serverTimestamp(),
+                      },
+                    ),
+                  });
                 },
                 text: 'Done',
                 options: FFButtonOptions(
@@ -140,7 +158,13 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
               children: [
                 FlutterFlowRadioButton(
                   options: ['프로젝트', '아르바이트', '공모전', '동아리'].toList(),
-                  onChanged: (val) => setState(() {}),
+                  onChanged: (val) async {
+                    setState(() {});
+                    setState(() {
+                      _model.radioButtonValueController?.value =
+                          _model.radioButtonValue!;
+                    });
+                  },
                   controller: _model.radioButtonValueController ??=
                       FormFieldController<String>(null),
                   optionHeight: 32.0,
@@ -450,7 +474,7 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Text(
-                        '보유 기술 스택',
+                        '필수 기술 스택',
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               letterSpacing: 0.0,
@@ -529,83 +553,7 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
                           ),
                         ),
                       ),
-                      FlutterFlowIconButton(
-                        borderRadius: 20.0,
-                        borderWidth: 1.0,
-                        buttonSize: 36.0,
-                        icon: const Icon(
-                          Icons.add,
-                          color: Color(0xFF7D7D7D),
-                          size: 18.0,
-                        ),
-                        onPressed: () {
-                          print('IconButton pressed ...');
-                        },
-                      ),
                     ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(48.0, 0.0, 0.0, 8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12.0),
-                    child: Container(
-                      width: 200.0,
-                      height: 140.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.0),
-                        border: Border.all(
-                          color: const Color(0xFFDDDDDD),
-                          width: 1.0,
-                        ),
-                      ),
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        children: [
-                          ListTile(
-                            title: Text(
-                              'HTML',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleLarge
-                                  .override(
-                                    fontFamily: 'Outfit',
-                                    fontSize: 14.0,
-                                    letterSpacing: 0.0,
-                                  ),
-                            ),
-                            dense: false,
-                          ),
-                          ListTile(
-                            title: Text(
-                              'CSS',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleLarge
-                                  .override(
-                                    fontFamily: 'Outfit',
-                                    fontSize: 14.0,
-                                    letterSpacing: 0.0,
-                                  ),
-                            ),
-                            dense: false,
-                          ),
-                          ListTile(
-                            title: Text(
-                              'JavaScript',
-                              style: FlutterFlowTheme.of(context)
-                                  .titleLarge
-                                  .override(
-                                    fontFamily: 'Outfit',
-                                    fontSize: 14.0,
-                                    letterSpacing: 0.0,
-                                  ),
-                            ),
-                            dense: false,
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ],

@@ -7,6 +7,7 @@ import 'schema/util/firestore_util.dart';
 
 import 'schema/userprofile_record.dart';
 import 'schema/posts_record.dart';
+import 'schema/postpage_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart' hide Order;
@@ -17,6 +18,7 @@ export 'schema/util/schema_util.dart';
 
 export 'schema/userprofile_record.dart';
 export 'schema/posts_record.dart';
+export 'schema/postpage_record.dart';
 
 /// Functions to query UserprofileRecords (as a Stream and as a Future).
 Future<int> queryUserprofileRecordCount({
@@ -87,6 +89,43 @@ Future<List<PostsRecord>> queryPostsRecordOnce({
     queryCollectionOnce(
       PostsRecord.collection,
       PostsRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+/// Functions to query PostpageRecords (as a Stream and as a Future).
+Future<int> queryPostpageRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      PostpageRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<PostpageRecord>> queryPostpageRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      PostpageRecord.collection,
+      PostpageRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<PostpageRecord>> queryPostpageRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      PostpageRecord.collection,
+      PostpageRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,

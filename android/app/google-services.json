@@ -12,7 +12,20 @@
           "package_name": "com.mycompany.devdevil"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "357774427239-44sbsdlcedcbff47mp0ldd4s7d7cgt5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.devdevil",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "357774427239-as7ejjt0fu4s5b9p17pe17n727hrbtpt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCNje6wyO5i-igZdltmjgmclcqJdxOksO8"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "357774427239-as7ejjt0fu4s5b9p17pe17n727hrbtpt.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "357774427239-mfq74ue804saulnnslpjvaipkb14fra2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.devdevil"
+              }
+            }
+          ]
         }
       }
     }

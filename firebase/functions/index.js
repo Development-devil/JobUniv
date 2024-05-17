@@ -5,4 +5,5 @@ admin.initializeApp();
 exports.onUserDeleted = functions.auth.user().onDelete(async (user) => {
   let firestore = admin.firestore();
   let userRef = firestore.doc("userprofile/" + user.uid);
+  await firestore.collection("userprofile").doc(user.uid).delete();
 });

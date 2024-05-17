@@ -1,3 +1,5 @@
+import '/auth/firebase_auth/auth_util.dart';
+import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -42,8 +44,8 @@ class _PostPageWidgetState extends State<PostPageWidget> {
         floatingActionButton: Align(
           alignment: const AlignmentDirectional(1.0, 1.0),
           child: FloatingActionButton.extended(
-            onPressed: () {
-              print('FloatingActionButton pressed ...');
+            onPressed: () async {
+              context.pushNamed('PostWritePage');
             },
             backgroundColor: const Color(0xFF1AB74F),
             elevation: 2.0,
@@ -101,32 +103,66 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                     child: Padding(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
-                      child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
-                        },
-                        text: '프로젝트',
-                        options: FFButtonOptions(
-                          height: 24.0,
-                          padding: const EdgeInsetsDirectional.fromSTEB(
-                              12.0, 0.0, 12.0, 0.0),
-                          iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 0.0),
-                          color: const Color(0xFF1AB74F),
-                          textStyle:
-                              FlutterFlowTheme.of(context).titleSmall.override(
+                      child: StreamBuilder<List<PostpageRecord>>(
+                        stream: queryPostpageRecord(
+                          queryBuilder: (postpageRecord) =>
+                              postpageRecord.orderBy('category'),
+                          singleRecord: true,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          List<PostpageRecord> buttonPostpageRecordList =
+                              snapshot.data!;
+                          // Return an empty Container when the item does not exist.
+                          if (snapshot.data!.isEmpty) {
+                            return Container();
+                          }
+                          final buttonPostpageRecord =
+                              buttonPostpageRecordList.isNotEmpty
+                                  ? buttonPostpageRecordList.first
+                                  : null;
+                          return FFButtonWidget(
+                            onPressed: () {
+                              print('Button pressed ...');
+                            },
+                            text: '프로젝트',
+                            options: FFButtonOptions(
+                              height: 24.0,
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  12.0, 0.0, 12.0, 0.0),
+                              iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              color: const Color(0xFF1AB74F),
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .titleSmall
+                                  .override(
                                     fontFamily: 'Readex Pro',
                                     color: Colors.white,
                                     fontSize: 12.0,
                                     letterSpacing: 0.0,
                                   ),
-                          elevation: 0.0,
-                          borderSide: const BorderSide(
-                            color: Colors.transparent,
-                            width: 1.0,
-                          ),
-                          borderRadius: BorderRadius.circular(18.0),
-                        ),
+                              elevation: 0.0,
+                              borderSide: const BorderSide(
+                                color: Colors.transparent,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(18.0),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -156,27 +192,95 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                           mainAxisSize: MainAxisSize.max,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              '류정환',
-                              textAlign: TextAlign.start,
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    letterSpacing: 0.0,
-                                  ),
+                            StreamBuilder<List<PostpageRecord>>(
+                              stream: queryPostpageRecord(
+                                queryBuilder: (postpageRecord) =>
+                                    postpageRecord.orderBy('writer'),
+                                singleRecord: true,
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          FlutterFlowTheme.of(context).primary,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                List<PostpageRecord> textPostpageRecordList =
+                                    snapshot.data!;
+                                // Return an empty Container when the item does not exist.
+                                if (snapshot.data!.isEmpty) {
+                                  return Container();
+                                }
+                                final textPostpageRecord =
+                                    textPostpageRecordList.isNotEmpty
+                                        ? textPostpageRecordList.first
+                                        : null;
+                                return Text(
+                                  '류정환',
+                                  textAlign: TextAlign.start,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        letterSpacing: 0.0,
+                                      ),
+                                );
+                              },
                             ),
-                            Text(
-                              '04/27 10:24',
-                              textAlign: TextAlign.start,
-                              style: FlutterFlowTheme.of(context)
-                                  .bodyMedium
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    color: FlutterFlowTheme.of(context)
-                                        .secondaryText,
-                                    letterSpacing: 0.0,
-                                  ),
+                            StreamBuilder<List<PostpageRecord>>(
+                              stream: queryPostpageRecord(
+                                queryBuilder: (postpageRecord) =>
+                                    postpageRecord.orderBy('day'),
+                                singleRecord: true,
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      child: CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          FlutterFlowTheme.of(context).primary,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                                List<PostpageRecord> textPostpageRecordList =
+                                    snapshot.data!;
+                                // Return an empty Container when the item does not exist.
+                                if (snapshot.data!.isEmpty) {
+                                  return Container();
+                                }
+                                final textPostpageRecord =
+                                    textPostpageRecordList.isNotEmpty
+                                        ? textPostpageRecordList.first
+                                        : null;
+                                return Text(
+                                  '04/27 10:24',
+                                  textAlign: TextAlign.start,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyMedium
+                                      .override(
+                                        fontFamily: 'Readex Pro',
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        letterSpacing: 0.0,
+                                      ),
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -188,15 +292,50 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                     child: Padding(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 6.0),
-                      child: Text(
-                        '오픈소스 전문프로젝트 UI/UX 디자이너',
-                        textAlign: TextAlign.start,
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              fontSize: 18.0,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                      child: StreamBuilder<List<PostpageRecord>>(
+                        stream: queryPostpageRecord(
+                          queryBuilder: (postpageRecord) =>
+                              postpageRecord.orderBy('Title'),
+                          singleRecord: true,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          List<PostpageRecord> textPostpageRecordList =
+                              snapshot.data!;
+                          // Return an empty Container when the item does not exist.
+                          if (snapshot.data!.isEmpty) {
+                            return Container();
+                          }
+                          final textPostpageRecord =
+                              textPostpageRecordList.isNotEmpty
+                                  ? textPostpageRecordList.first
+                                  : null;
+                          return Text(
+                            '오픈소스 전문프로젝트 UI/UX 디자이너',
+                            textAlign: TextAlign.start,
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  fontSize: 18.0,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -205,12 +344,47 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                     child: Padding(
                       padding:
                           const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 6.0),
-                      child: Text(
-                        '안녕하세요. 오픈소스 전문프로젝트 수업 UI/UX 디자이너\n모집 중입니다. 관심 있으신 분들은 지원 부탁드립니다.',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              letterSpacing: 0.0,
-                            ),
+                      child: StreamBuilder<List<PostpageRecord>>(
+                        stream: queryPostpageRecord(
+                          queryBuilder: (postpageRecord) =>
+                              postpageRecord.orderBy('contents'),
+                          singleRecord: true,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 50.0,
+                                height: 50.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          List<PostpageRecord> textPostpageRecordList =
+                              snapshot.data!;
+                          // Return an empty Container when the item does not exist.
+                          if (snapshot.data!.isEmpty) {
+                            return Container();
+                          }
+                          final textPostpageRecord =
+                              textPostpageRecordList.isNotEmpty
+                                  ? textPostpageRecordList.first
+                                  : null;
+                          return Text(
+                            '안녕하세요. 오픈소스 전문프로젝트 수업 UI/UX 디자이너\n모집 중입니다. 관심 있으신 분들은 지원 부탁드립니다.',
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Readex Pro',
+                                  letterSpacing: 0.0,
+                                ),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -234,14 +408,48 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
-                        Text(
-                          'UI/UX',
-                          textAlign: TextAlign.start,
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
+                        StreamBuilder<List<PostpageRecord>>(
+                          stream: queryPostpageRecord(
+                            queryBuilder: (postpageRecord) =>
+                                postpageRecord.orderBy('CareerFields'),
+                            singleRecord: true,
+                          ),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 50.0,
+                                  height: 50.0,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      FlutterFlowTheme.of(context).primary,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            List<PostpageRecord> textPostpageRecordList =
+                                snapshot.data!;
+                            // Return an empty Container when the item does not exist.
+                            if (snapshot.data!.isEmpty) {
+                              return Container();
+                            }
+                            final textPostpageRecord =
+                                textPostpageRecordList.isNotEmpty
+                                    ? textPostpageRecordList.first
+                                    : null;
+                            return Text(
+                              'UI/UX',
+                              textAlign: TextAlign.start,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -262,14 +470,48 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
-                        Text(
-                          '1명',
-                          textAlign: TextAlign.start,
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
+                        StreamBuilder<List<PostpageRecord>>(
+                          stream: queryPostpageRecord(
+                            queryBuilder: (postpageRecord) =>
+                                postpageRecord.orderBy('count'),
+                            singleRecord: true,
+                          ),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 50.0,
+                                  height: 50.0,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      FlutterFlowTheme.of(context).primary,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            List<PostpageRecord> textPostpageRecordList =
+                                snapshot.data!;
+                            // Return an empty Container when the item does not exist.
+                            if (snapshot.data!.isEmpty) {
+                              return Container();
+                            }
+                            final textPostpageRecord =
+                                textPostpageRecordList.isNotEmpty
+                                    ? textPostpageRecordList.first
+                                    : null;
+                            return Text(
+                              '1명',
+                              textAlign: TextAlign.start,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -291,14 +533,48 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
-                        Text(
-                          'Figma',
-                          textAlign: TextAlign.start,
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
+                        StreamBuilder<List<PostpageRecord>>(
+                          stream: queryPostpageRecord(
+                            queryBuilder: (postpageRecord) =>
+                                postpageRecord.orderBy('RequiredSkills'),
+                            singleRecord: true,
+                          ),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 50.0,
+                                  height: 50.0,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      FlutterFlowTheme.of(context).primary,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            List<PostpageRecord> textPostpageRecordList =
+                                snapshot.data!;
+                            // Return an empty Container when the item does not exist.
+                            if (snapshot.data!.isEmpty) {
+                              return Container();
+                            }
+                            final textPostpageRecord =
+                                textPostpageRecordList.isNotEmpty
+                                    ? textPostpageRecordList.first
+                                    : null;
+                            return Text(
+                              'Figma',
+                              textAlign: TextAlign.start,
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
                                     fontFamily: 'Readex Pro',
                                     letterSpacing: 0.0,
                                   ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -404,8 +680,8 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 8.0, 0.0),
                             child: FFButtonWidget(
-                              onPressed: () {
-                                print('Button pressed ...');
+                              onPressed: () async {
+                                context.pushNamed('ApplicantListPage');
                               },
                               text: '지원자 명단',
                               options: FFButtonOptions(
@@ -436,8 +712,8 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                         Align(
                           alignment: const AlignmentDirectional(1.0, -1.0),
                           child: FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
+                            onPressed: () async {
+                              await currentUserReference!.delete();
                             },
                             text: '삭제',
                             options: FFButtonOptions(
