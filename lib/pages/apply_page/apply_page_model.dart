@@ -6,6 +6,7 @@ class ApplyPageModel extends FlutterFlowModel<ApplyPageWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
+  final formKey = GlobalKey<FormState>();
   // State field(s) for TextField widget.
   FocusNode? textFieldFocusNode1;
   TextEditingController? textController1;
@@ -18,6 +19,10 @@ class ApplyPageModel extends FlutterFlowModel<ApplyPageWidget> {
   FocusNode? textFieldFocusNode3;
   TextEditingController? textController3;
   String? Function(BuildContext, String?)? textController3Validator;
+  // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode4;
+  TextEditingController? textController4;
+  String? Function(BuildContext, String?)? textController4Validator;
 
   @override
   void initState(BuildContext context) {}
@@ -33,5 +38,8 @@ class ApplyPageModel extends FlutterFlowModel<ApplyPageWidget> {
 
     textFieldFocusNode3?.dispose();
     textController3?.dispose();
+
+    textFieldFocusNode4?.dispose();
+    textController4?.dispose();
   }
 }

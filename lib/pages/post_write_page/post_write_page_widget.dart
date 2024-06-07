@@ -107,14 +107,15 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
                 onPressed: () async {
                   await PostpageRecord.collection.doc().set({
                     ...createPostpageRecordData(
-                      category: _model.radioButtonValue != null &&
-                          _model.radioButtonValue != '',
+                      category: _model.radioButtonValue,
                       title: _model.textController1.text,
                       contents: _model.textController2.text,
                       careerFields: _model.textController3.text,
                       count: int.tryParse(_model.textController4.text),
                       requiredSkills: _model.textController5.text,
-                      writer: currentUserDisplayName,
+                      viewcount: 0,
+                      likecount: 0,
+                      userRefer: currentUserReference,
                     ),
                     ...mapToFirestore(
                       {
@@ -122,6 +123,7 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
                       },
                     ),
                   });
+                  context.safePop();
                 },
                 text: 'Done',
                 options: FFButtonOptions(

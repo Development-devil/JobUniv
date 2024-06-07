@@ -1,3 +1,5 @@
+import '/backend/backend.dart';
+import '/backend/push_notifications/push_notifications_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -6,7 +8,14 @@ import 'applicant_list_page_model.dart';
 export 'applicant_list_page_model.dart';
 
 class ApplicantListPageWidget extends StatefulWidget {
-  const ApplicantListPageWidget({super.key});
+  const ApplicantListPageWidget({
+    super.key,
+    this.posttitlelist,
+    this.postwriterlist,
+  });
+
+  final String? posttitlelist;
+  final String? postwriterlist;
 
   @override
   State<ApplicantListPageWidget> createState() =>
@@ -75,160 +84,268 @@ class _ApplicantListPageWidgetState extends State<ApplicantListPageWidget> {
           top: true,
           child: Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 24.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                        boxShadow: const [
-                          BoxShadow(
-                            blurRadius: 4.0,
-                            color: Color(0x33000000),
-                            offset: Offset(
-                              0.0,
-                              2.0,
-                            ),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(18.0),
+            child: StreamBuilder<List<ApplicantpageRecord>>(
+              stream: queryApplicantpageRecord(
+                queryBuilder: (applicantpageRecord) => applicantpageRecord
+                    .where(
+                      'postwriter',
+                      isEqualTo: widget.postwriterlist,
+                    )
+                    .where(
+                      'posttitle',
+                      isEqualTo: widget.posttitlelist,
+                    ),
+              ),
+              builder: (context, snapshot) {
+                // Customize what your widget looks like when it's loading.
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: SizedBox(
+                      width: 50.0,
+                      height: 50.0,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          FlutterFlowTheme.of(context).primary,
+                        ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 0.0, 4.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
+                    ),
+                  );
+                }
+                List<ApplicantpageRecord> columnApplicantpageRecordList =
+                    snapshot.data!;
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: List.generate(
+                        columnApplicantpageRecordList.length, (columnIndex) {
+                      final columnApplicantpageRecord =
+                          columnApplicantpageRecordList[columnIndex];
+                      return Padding(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            24.0, 0.0, 24.0, 24.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                            boxShadow: const [
+                              BoxShadow(
+                                blurRadius: 4.0,
+                                color: Color(0x33000000),
+                                offset: Offset(
+                                  0.0,
+                                  2.0,
+                                ),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(18.0),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                      0.0, 0.0, 0.0, 4.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional.fromSTEB(
+                                            0.0, 0.0, 8.0, 0.0),
+                                        child: Text(
+                                          columnApplicantpageRecord.name,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                fontSize: 20.0,
+                                                letterSpacing: 0.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ),
+                                      Text(
+                                        columnApplicantpageRecord.department,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .secondaryText,
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Align(
+                                  alignment: const AlignmentDirectional(-1.0, 0.0),
+                                  child: Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 8.0, 0.0),
+                                        0.0, 0.0, 0.0, 8.0),
                                     child: Text(
-                                      '류정환',
+                                      columnApplicantpageRecord.motive,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
                                             fontFamily: 'Readex Pro',
-                                            fontSize: 20.0,
                                             letterSpacing: 0.0,
-                                            fontWeight: FontWeight.bold,
                                           ),
                                     ),
                                   ),
-                                  Text(
-                                    '소프트웨어학부',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryText,
-                                          letterSpacing: 0.0,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: const AlignmentDirectional(-1.0, 0.0),
-                              child: Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 8.0),
-                                child: Text(
-                                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard...',
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyMedium
-                                      .override(
-                                        fontFamily: 'Readex Pro',
-                                        letterSpacing: 0.0,
-                                      ),
                                 ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
-                                      0.0, 0.0, 8.0, 0.0),
-                                  child: FFButtonWidget(
-                                    onPressed: () {
-                                      print('Button pressed ...');
-                                    },
-                                    text: '상세 정보 보기',
-                                    options: FFButtonOptions(
-                                      height: 22.0,
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Padding(
                                       padding: const EdgeInsetsDirectional.fromSTEB(
-                                          12.0, 0.0, 12.0, 0.0),
-                                      iconPadding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              0.0, 0.0, 0.0, 0.0),
-                                      color: const Color(0xFF1AB74F),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .titleSmall
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            color: Colors.white,
-                                            fontSize: 12.0,
-                                            letterSpacing: 0.0,
-                                            fontWeight: FontWeight.normal,
+                                          0.0, 0.0, 8.0, 0.0),
+                                      child: FFButtonWidget(
+                                        onPressed: () async {
+                                          context.pushNamed(
+                                            'ApplicantListDetailPage',
+                                            queryParameters: {
+                                              'applistapplidetailparam':
+                                                  serializeParam(
+                                                columnApplicantpageRecord
+                                                    .reference,
+                                                ParamType.DocumentReference,
+                                              ),
+                                            }.withoutNulls,
+                                          );
+                                        },
+                                        text: '상세 정보 보기',
+                                        options: FFButtonOptions(
+                                          height: 22.0,
+                                          padding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  12.0, 0.0, 12.0, 0.0),
+                                          iconPadding:
+                                              const EdgeInsetsDirectional.fromSTEB(
+                                                  0.0, 0.0, 0.0, 0.0),
+                                          color: const Color(0xFF1AB74F),
+                                          textStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .titleSmall
+                                                  .override(
+                                                    fontFamily: 'Readex Pro',
+                                                    color: Colors.white,
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  ),
+                                          elevation: 0.0,
+                                          borderSide: const BorderSide(
+                                            color: Colors.transparent,
+                                            width: 1.0,
                                           ),
-                                      elevation: 0.0,
-                                      borderSide: const BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1.0,
-                                      ),
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                  ),
-                                ),
-                                FFButtonWidget(
-                                  onPressed: () {
-                                    print('Button pressed ...');
-                                  },
-                                  text: '합격 통보',
-                                  options: FFButtonOptions(
-                                    height: 22.0,
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        12.0, 0.0, 12.0, 0.0),
-                                    iconPadding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 0.0, 0.0, 0.0),
-                                    color: const Color(0xFF1AB74F),
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .titleSmall
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          color: Colors.white,
-                                          fontSize: 12.0,
-                                          letterSpacing: 0.0,
-                                          fontWeight: FontWeight.w500,
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
                                         ),
-                                    elevation: 0.0,
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                      width: 1.0,
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
+                                    StreamBuilder<List<UserprofileRecord>>(
+                                      stream: queryUserprofileRecord(
+                                        queryBuilder: (userprofileRecord) =>
+                                            userprofileRecord.where(
+                                          'display_name',
+                                          isEqualTo:
+                                              columnApplicantpageRecord.name,
+                                        ),
+                                        singleRecord: true,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<UserprofileRecord>
+                                            buttonUserprofileRecordList =
+                                            snapshot.data!;
+                                        // Return an empty Container when the item does not exist.
+                                        if (snapshot.data!.isEmpty) {
+                                          return Container();
+                                        }
+                                        final buttonUserprofileRecord =
+                                            buttonUserprofileRecordList
+                                                    .isNotEmpty
+                                                ? buttonUserprofileRecordList
+                                                    .first
+                                                : null;
+                                        return FFButtonWidget(
+                                          onPressed: () async {
+                                            triggerPushNotification(
+                                              notificationTitle: '합격 축하드립니다!',
+                                              notificationText:
+                                                  '지원자께서는 합격하셨습니다.',
+                                              userRefs: [
+                                                columnApplicantpageRecord
+                                                    .singleUser!
+                                              ],
+                                              initialPageName: 'MyApplyPage',
+                                              parameterData: {},
+                                            );
+                                          },
+                                          text: '합격 통보',
+                                          options: FFButtonOptions(
+                                            height: 22.0,
+                                            padding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    12.0, 0.0, 12.0, 0.0),
+                                            iconPadding:
+                                                const EdgeInsetsDirectional.fromSTEB(
+                                                    0.0, 0.0, 0.0, 0.0),
+                                            color: const Color(0xFF1AB74F),
+                                            textStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmall
+                                                    .override(
+                                                      fontFamily: 'Readex Pro',
+                                                      color: Colors.white,
+                                                      fontSize: 12.0,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                            elevation: 0.0,
+                                            borderSide: const BorderSide(
+                                              color: Colors.transparent,
+                                              width: 1.0,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ),

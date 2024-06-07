@@ -25,6 +25,11 @@ class LoginSignupPageModel extends FlutterFlowModel<LoginSignupPageWidget> {
   TextEditingController? emailAddressCreateTextController;
   String? Function(BuildContext, String?)?
       emailAddressCreateTextControllerValidator;
+  // State field(s) for nickname_Create widget.
+  FocusNode? nicknameCreateFocusNode;
+  TextEditingController? nicknameCreateTextController;
+  String? Function(BuildContext, String?)?
+      nicknameCreateTextControllerValidator;
   // State field(s) for password_Create widget.
   FocusNode? passwordCreateFocusNode;
   TextEditingController? passwordCreateTextController;
@@ -37,6 +42,21 @@ class LoginSignupPageModel extends FlutterFlowModel<LoginSignupPageWidget> {
   late bool passwordConfirmVisibility;
   String? Function(BuildContext, String?)?
       passwordConfirmTextControllerValidator;
+  // State field(s) for university_Create widget.
+  FocusNode? universityCreateFocusNode;
+  TextEditingController? universityCreateTextController;
+  String? Function(BuildContext, String?)?
+      universityCreateTextControllerValidator;
+  // State field(s) for department_Create widget.
+  FocusNode? departmentCreateFocusNode;
+  TextEditingController? departmentCreateTextController;
+  String? Function(BuildContext, String?)?
+      departmentCreateTextControllerValidator;
+  // State field(s) for phonenumber_Create widget.
+  FocusNode? phonenumberCreateFocusNode;
+  TextEditingController? phonenumberCreateTextController;
+  String? Function(BuildContext, String?)?
+      phonenumberCreateTextControllerValidator;
 
   @override
   void initState(BuildContext context) {
@@ -58,10 +78,22 @@ class LoginSignupPageModel extends FlutterFlowModel<LoginSignupPageWidget> {
     emailAddressCreateFocusNode?.dispose();
     emailAddressCreateTextController?.dispose();
 
+    nicknameCreateFocusNode?.dispose();
+    nicknameCreateTextController?.dispose();
+
     passwordCreateFocusNode?.dispose();
     passwordCreateTextController?.dispose();
 
     passwordConfirmFocusNode?.dispose();
     passwordConfirmTextController?.dispose();
+
+    universityCreateFocusNode?.dispose();
+    universityCreateTextController?.dispose();
+
+    departmentCreateFocusNode?.dispose();
+    departmentCreateTextController?.dispose();
+
+    phonenumberCreateFocusNode?.dispose();
+    phonenumberCreateTextController?.dispose();
   }
 }

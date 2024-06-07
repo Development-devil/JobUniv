@@ -15,11 +15,6 @@ class PostpageRecord extends FirestoreRecord {
     _initializeFields();
   }
 
-  // "category" field.
-  bool? _category;
-  bool get category => _category ?? false;
-  bool hasCategory() => _category != null;
-
   // "Title" field.
   String? _title;
   String get title => _title ?? '';
@@ -50,20 +45,37 @@ class PostpageRecord extends FirestoreRecord {
   DateTime? get day => _day;
   bool hasDay() => _day != null;
 
-  // "writer" field.
-  String? _writer;
-  String get writer => _writer ?? '';
-  bool hasWriter() => _writer != null;
+  // "category" field.
+  String? _category;
+  String get category => _category ?? '';
+  bool hasCategory() => _category != null;
+
+  // "viewcount" field.
+  int? _viewcount;
+  int get viewcount => _viewcount ?? 0;
+  bool hasViewcount() => _viewcount != null;
+
+  // "likecount" field.
+  int? _likecount;
+  int get likecount => _likecount ?? 0;
+  bool hasLikecount() => _likecount != null;
+
+  // "userRefer" field.
+  DocumentReference? _userRefer;
+  DocumentReference? get userRefer => _userRefer;
+  bool hasUserRefer() => _userRefer != null;
 
   void _initializeFields() {
-    _category = snapshotData['category'] as bool?;
     _title = snapshotData['Title'] as String?;
     _contents = snapshotData['contents'] as String?;
     _careerFields = snapshotData['CareerFields'] as String?;
     _count = castToType<int>(snapshotData['count']);
     _requiredSkills = snapshotData['RequiredSkills'] as String?;
     _day = snapshotData['day'] as DateTime?;
-    _writer = snapshotData['writer'] as String?;
+    _category = snapshotData['category'] as String?;
+    _viewcount = castToType<int>(snapshotData['viewcount']);
+    _likecount = castToType<int>(snapshotData['likecount']);
+    _userRefer = snapshotData['userRefer'] as DocumentReference?;
   }
 
   static CollectionReference get collection =>
@@ -101,25 +113,29 @@ class PostpageRecord extends FirestoreRecord {
 }
 
 Map<String, dynamic> createPostpageRecordData({
-  bool? category,
   String? title,
   String? contents,
   String? careerFields,
   int? count,
   String? requiredSkills,
   DateTime? day,
-  String? writer,
+  String? category,
+  int? viewcount,
+  int? likecount,
+  DocumentReference? userRefer,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
-      'category': category,
       'Title': title,
       'contents': contents,
       'CareerFields': careerFields,
       'count': count,
       'RequiredSkills': requiredSkills,
       'day': day,
-      'writer': writer,
+      'category': category,
+      'viewcount': viewcount,
+      'likecount': likecount,
+      'userRefer': userRefer,
     }.withoutNulls,
   );
 
@@ -131,26 +147,30 @@ class PostpageRecordDocumentEquality implements Equality<PostpageRecord> {
 
   @override
   bool equals(PostpageRecord? e1, PostpageRecord? e2) {
-    return e1?.category == e2?.category &&
-        e1?.title == e2?.title &&
+    return e1?.title == e2?.title &&
         e1?.contents == e2?.contents &&
         e1?.careerFields == e2?.careerFields &&
         e1?.count == e2?.count &&
         e1?.requiredSkills == e2?.requiredSkills &&
         e1?.day == e2?.day &&
-        e1?.writer == e2?.writer;
+        e1?.category == e2?.category &&
+        e1?.viewcount == e2?.viewcount &&
+        e1?.likecount == e2?.likecount &&
+        e1?.userRefer == e2?.userRefer;
   }
 
   @override
   int hash(PostpageRecord? e) => const ListEquality().hash([
-        e?.category,
         e?.title,
         e?.contents,
         e?.careerFields,
         e?.count,
         e?.requiredSkills,
         e?.day,
-        e?.writer
+        e?.category,
+        e?.viewcount,
+        e?.likecount,
+        e?.userRefer
       ]);
 
   @override

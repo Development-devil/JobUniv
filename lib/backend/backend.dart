@@ -6,8 +6,8 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'schema/util/firestore_util.dart';
 
 import 'schema/userprofile_record.dart';
-import 'schema/posts_record.dart';
 import 'schema/postpage_record.dart';
+import 'schema/applicantpage_record.dart';
 
 export 'dart:async' show StreamSubscription;
 export 'package:cloud_firestore/cloud_firestore.dart' hide Order;
@@ -17,8 +17,8 @@ export 'schema/util/firestore_util.dart';
 export 'schema/util/schema_util.dart';
 
 export 'schema/userprofile_record.dart';
-export 'schema/posts_record.dart';
 export 'schema/postpage_record.dart';
+export 'schema/applicantpage_record.dart';
 
 /// Functions to query UserprofileRecords (as a Stream and as a Future).
 Future<int> queryUserprofileRecordCount({
@@ -57,43 +57,6 @@ Future<List<UserprofileRecord>> queryUserprofileRecordOnce({
       singleRecord: singleRecord,
     );
 
-/// Functions to query PostsRecords (as a Stream and as a Future).
-Future<int> queryPostsRecordCount({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-}) =>
-    queryCollectionCount(
-      PostsRecord.collection,
-      queryBuilder: queryBuilder,
-      limit: limit,
-    );
-
-Stream<List<PostsRecord>> queryPostsRecord({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollection(
-      PostsRecord.collection,
-      PostsRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<List<PostsRecord>> queryPostsRecordOnce({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollectionOnce(
-      PostsRecord.collection,
-      PostsRecord.fromSnapshot,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
 /// Functions to query PostpageRecords (as a Stream and as a Future).
 Future<int> queryPostpageRecordCount({
   Query Function(Query)? queryBuilder,
@@ -126,6 +89,43 @@ Future<List<PostpageRecord>> queryPostpageRecordOnce({
     queryCollectionOnce(
       PostpageRecord.collection,
       PostpageRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+/// Functions to query ApplicantpageRecords (as a Stream and as a Future).
+Future<int> queryApplicantpageRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      ApplicantpageRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<ApplicantpageRecord>> queryApplicantpageRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      ApplicantpageRecord.collection,
+      ApplicantpageRecord.fromSnapshot,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<ApplicantpageRecord>> queryApplicantpageRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      ApplicantpageRecord.collection,
+      ApplicantpageRecord.fromSnapshot,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,

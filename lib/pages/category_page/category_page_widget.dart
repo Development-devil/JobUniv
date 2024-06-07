@@ -80,53 +80,55 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
                     ),
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.article_outlined,
-                    color: Color(0xFF6BA1E1),
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    context.pushNamed('MyArticlesPage');
+                  },
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.article_outlined,
+                      color: Color(0xFF6BA1E1),
+                    ),
+                    title: Text(
+                      'My articles',
+                      textAlign: TextAlign.start,
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Outfit',
+                            fontSize: 14.0,
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                    dense: false,
                   ),
-                  title: Text(
-                    'My articles',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).titleLarge.override(
-                          fontFamily: 'Outfit',
-                          fontSize: 14.0,
-                          letterSpacing: 0.0,
-                        ),
-                  ),
-                  dense: false,
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.chat_bubble_outline_rounded,
-                    color: Color(0xFF30CA93),
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    context.pushNamed('MyApplyPage');
+                  },
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      color: Color(0xFF30CA93),
+                    ),
+                    title: Text(
+                      'My applys',
+                      textAlign: TextAlign.start,
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Outfit',
+                            fontSize: 14.0,
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                    dense: false,
                   ),
-                  title: Text(
-                    'My comments',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).titleLarge.override(
-                          fontFamily: 'Outfit',
-                          fontSize: 14.0,
-                          letterSpacing: 0.0,
-                        ),
-                  ),
-                  dense: false,
-                ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.star_border,
-                    color: Color(0xFFEEC843),
-                  ),
-                  title: Text(
-                    'My scrap',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).titleLarge.override(
-                          fontFamily: 'Outfit',
-                          fontSize: 14.0,
-                          letterSpacing: 0.0,
-                        ),
-                  ),
-                  dense: false,
                 ),
                 const Divider(
                   height: 36.0,
@@ -149,41 +151,115 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
                     ),
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    '프로젝트 구인구직',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).titleLarge.override(
-                          fontFamily: 'Outfit',
-                          fontSize: 14.0,
-                          letterSpacing: 0.0,
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    context.pushNamed(
+                      'BoardPage',
+                      queryParameters: {
+                        'categoryparam': serializeParam(
+                          '프로젝트',
+                          ParamType.String,
                         ),
+                        'sortBy': serializeParam(
+                          '최신글 순',
+                          ParamType.String,
+                        ),
+                        'sortkeytype': serializeParam(
+                          1,
+                          ParamType.int,
+                        ),
+                      }.withoutNulls,
+                    );
+                  },
+                  child: ListTile(
+                    title: Text(
+                      '프로젝트 구인구직',
+                      textAlign: TextAlign.start,
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Outfit',
+                            fontSize: 14.0,
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward,
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      size: 20.0,
+                    ),
+                    dense: false,
                   ),
-                  dense: false,
                 ),
-                ListTile(
-                  title: Text(
-                    '아르바이트 구인구직',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).titleLarge.override(
-                          fontFamily: 'Outfit',
-                          fontSize: 14.0,
-                          letterSpacing: 0.0,
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    context.pushNamed(
+                      'BoardPage',
+                      queryParameters: {
+                        'categoryparam': serializeParam(
+                          '아르바이트',
+                          ParamType.String,
                         ),
+                      }.withoutNulls,
+                    );
+                  },
+                  child: ListTile(
+                    title: Text(
+                      '아르바이트 구인구직',
+                      textAlign: TextAlign.start,
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Outfit',
+                            fontSize: 14.0,
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward,
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      size: 20.0,
+                    ),
+                    dense: false,
                   ),
-                  dense: false,
                 ),
-                ListTile(
-                  title: Text(
-                    '공모전 구인구직',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).titleLarge.override(
-                          fontFamily: 'Outfit',
-                          fontSize: 14.0,
-                          letterSpacing: 0.0,
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    context.pushNamed(
+                      'BoardPage',
+                      queryParameters: {
+                        'categoryparam': serializeParam(
+                          '공모전',
+                          ParamType.String,
                         ),
+                      }.withoutNulls,
+                    );
+                  },
+                  child: ListTile(
+                    title: Text(
+                      '공모전 구인구직',
+                      textAlign: TextAlign.start,
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Outfit',
+                            fontSize: 14.0,
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward,
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      size: 20.0,
+                    ),
+                    dense: false,
                   ),
-                  dense: false,
                 ),
                 const Divider(
                   height: 36.0,
@@ -206,17 +282,39 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
                     ),
                   ),
                 ),
-                ListTile(
-                  title: Text(
-                    '동아리 홍보',
-                    textAlign: TextAlign.start,
-                    style: FlutterFlowTheme.of(context).titleLarge.override(
-                          fontFamily: 'Outfit',
-                          fontSize: 14.0,
-                          letterSpacing: 0.0,
+                InkWell(
+                  splashColor: Colors.transparent,
+                  focusColor: Colors.transparent,
+                  hoverColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onTap: () async {
+                    context.pushNamed(
+                      'BoardPage',
+                      queryParameters: {
+                        'categoryparam': serializeParam(
+                          '동아리',
+                          ParamType.String,
                         ),
+                      }.withoutNulls,
+                    );
+                  },
+                  child: ListTile(
+                    title: Text(
+                      '동아리 홍보',
+                      textAlign: TextAlign.start,
+                      style: FlutterFlowTheme.of(context).titleLarge.override(
+                            fontFamily: 'Outfit',
+                            fontSize: 14.0,
+                            letterSpacing: 0.0,
+                          ),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward,
+                      color: FlutterFlowTheme.of(context).secondaryText,
+                      size: 20.0,
+                    ),
+                    dense: false,
                   ),
-                  dense: false,
                 ),
               ],
             ),

@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -5,10 +6,11 @@ import 'package:flutter_web_plugins/url_strategy.dart';
 import 'auth/firebase_auth/firebase_user_provider.dart';
 import 'auth/firebase_auth/auth_util.dart';
 
+import 'backend/push_notifications/push_notifications_util.dart';
 import 'backend/firebase/firebase_config.dart';
 import 'flutter_flow/flutter_flow_theme.dart';
 import 'flutter_flow/flutter_flow_util.dart';
-import 'flutter_flow/nav/nav.dart';
+import 'flutter_flow/internationalization.dart';
 import 'index.dart';
 
 void main() async {
@@ -17,9 +19,13 @@ void main() async {
   usePathUrlStrategy();
   await initFirebase();
 
-  await FlutterFlowTheme.initialize();
+  final appState = FFAppState(); // Initialize FFAppState
+  await appState.initializePersistedState();
 
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => appState,
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -34,7 +40,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = FlutterFlowTheme.themeMode;
+  Locale? _locale;
+  ThemeMode _themeMode = ThemeMode.system;
 
   late Stream<BaseAuthUser> userStream;
 
@@ -42,6 +49,7 @@ class _MyAppState extends State<MyApp> {
   late GoRouter _router;
 
   final authUserSub = authenticatedUserStream.listen((_) {});
+  final fcmTokenSub = fcmTokenUserStream.listen((_) {});
 
   @override
   void initState() {
@@ -61,13 +69,16 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     authUserSub.cancel();
-
+    fcmTokenSub.cancel();
     super.dispose();
+  }
+
+  void setLocale(String language) {
+    setState(() => _locale = createLocale(language));
   }
 
   void setThemeMode(ThemeMode mode) => setState(() {
         _themeMode = mode;
-        FlutterFlowTheme.saveThemeMode(mode);
       });
 
   @override
@@ -75,17 +86,17 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp.router(
       title: 'devdevil',
       localizationsDelegates: const [
+        FFLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [Locale('en', '')],
+      locale: _locale,
+      supportedLocales: const [
+        Locale('ko'),
+      ],
       theme: ThemeData(
         brightness: Brightness.light,
-        useMaterial3: false,
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
         useMaterial3: false,
       ),
       themeMode: _themeMode,
@@ -121,7 +132,6 @@ class _NavBarPageState extends State<NavBarPage> {
     final tabs = {
       'HomePage': const HomePageWidget(),
       'CategoryPage': const CategoryPageWidget(),
-      'MessagesPage': const MessagesPageWidget(),
       'ProfilePage': const ProfilePageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -137,8 +147,8 @@ class _NavBarPageState extends State<NavBarPage> {
         backgroundColor: const Color(0xFFF3F3F3),
         selectedItemColor: FlutterFlowTheme.of(context).primaryText,
         unselectedItemColor: FlutterFlowTheme.of(context).secondaryText,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -155,14 +165,6 @@ class _NavBarPageState extends State<NavBarPage> {
               size: 24.0,
             ),
             label: 'Board',
-            tooltip: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.mail_outline,
-              size: 24.0,
-            ),
-            label: 'Messages',
             tooltip: '',
           ),
           BottomNavigationBarItem(

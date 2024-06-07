@@ -71,9 +71,7 @@ class FirebaseAuthManager extends AuthManager
       if (e.code == 'requires-recent-login') {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-                  'Too long since most recent sign in. Sign in again before deleting your account.')),
+          const SnackBar(content: Text('탈퇴하기 전에 다시 로그인하세요.')),
         );
       }
     }
@@ -95,9 +93,7 @@ class FirebaseAuthManager extends AuthManager
       if (e.code == 'requires-recent-login') {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text(
-                  'Too long since most recent sign in. Sign in again before updating your email.')),
+          const SnackBar(content: Text('이메일을 업데이트 하기 전에 다시 로그인하세요.')),
         );
       }
     }
@@ -113,12 +109,12 @@ class FirebaseAuthManager extends AuthManager
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.message!}')),
+        SnackBar(content: Text('[error]'.replaceAll('[error]', e.message!))),
       );
       return null;
     }
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Password reset email sent')),
+      const SnackBar(content: Text('비밀번호 변경 이메일이 발송되었습니다.')),
     );
   }
 
@@ -184,7 +180,7 @@ class FirebaseAuthManager extends AuthManager
       } else if (phoneAuthManager.phoneAuthError != null) {
         final e = phoneAuthManager.phoneAuthError!;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error: ${e.message!}'),
+          content: Text('[error]'.replaceAll('[error]', e.message!)),
         ));
         phoneAuthManager.update(() => phoneAuthManager.phoneAuthError = null);
       }
@@ -290,11 +286,9 @@ class FirebaseAuthManager extends AuthManager
           : DevdevilFirebaseUser.fromUserCredential(userCredential);
     } on FirebaseAuthException catch (e) {
       final errorMsg = switch (e.code) {
-        'email-already-in-use' =>
-          'Error: The email is already in use by a different account',
-        'INVALID_LOGIN_CREDENTIALS' =>
-          'Error: The supplied auth credential is incorrect, malformed or has expired',
-        _ => 'Error: ${e.message!}',
+        'email-already-in-use' => '이미 사용중인 이메일입니다.',
+        'INVALID_LOGIN_CREDENTIALS' => '아이디와 비밀번호가 올바르지 않습니다.',
+        _ => '[error]'.replaceAll('[error]', e.message!),
       };
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(

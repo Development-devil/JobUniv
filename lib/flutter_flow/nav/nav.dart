@@ -7,6 +7,8 @@ import '/backend/schema/structs/index.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
+import '/backend/push_notifications/push_notifications_handler.dart'
+    show PushNotificationsHandler;
 import '/index.dart';
 import '/main.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -75,14 +77,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const NavBarPage() : const LoginSignupPageWidget(),
+          appStateNotifier.loggedIn ? const NavBarPage() : const OnboardingPageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.loggedIn
-              ? const NavBarPage()
-              : const LoginSignupPageWidget(),
+          builder: (context, _) =>
+              appStateNotifier.loggedIn ? const NavBarPage() : const OnboardingPageWidget(),
         ),
         FFRoute(
           name: 'HomePage',
@@ -99,31 +100,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               : const CategoryPageWidget(),
         ),
         FFRoute(
-          name: 'MessagesPage',
-          path: '/messagesPage',
-          builder: (context, params) => params.isEmpty
-              ? const NavBarPage(initialPage: 'MessagesPage')
-              : const MessagesPageWidget(),
-        ),
-        FFRoute(
           name: 'ProfilePage',
           path: '/profilePage',
           builder: (context, params) => params.isEmpty
               ? const NavBarPage(initialPage: 'ProfilePage')
-              : ProfilePageWidget(
-                  skillListData: params.getParam(
-                    'skillListData',
-                    ParamType.DocumentReference,
-                    isList: false,
-                    collectionNamePath: ['posts'],
-                  ),
-                  userProfileData: params.getParam(
-                    'userProfileData',
-                    ParamType.DocumentReference,
-                    isList: false,
-                    collectionNamePath: ['userprofile'],
-                  ),
-                ),
+              : const ProfilePageWidget(),
         ),
         FFRoute(
           name: 'PostWritePage',
@@ -133,17 +114,56 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'ApplyPage',
           path: '/applyPage',
-          builder: (context, params) => const ApplyPageWidget(),
+          builder: (context, params) => ApplyPageWidget(
+            posttitle: params.getParam(
+              'posttitle',
+              ParamType.String,
+            ),
+            postwriter: params.getParam(
+              'postwriter',
+              ParamType.String,
+            ),
+            postpageRef: params.getParam(
+              'postpageRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['postpage'],
+            ),
+          ),
         ),
         FFRoute(
           name: 'BoardPage',
           path: '/boardPage',
-          builder: (context, params) => const BoardPageWidget(),
+          builder: (context, params) => BoardPageWidget(
+            categoryparam: params.getParam(
+              'categoryparam',
+              ParamType.String,
+            ),
+            sortBy: params.getParam(
+              'sortBy',
+              ParamType.String,
+            ),
+            sortkeytype: params.getParam(
+              'sortkeytype',
+              ParamType.int,
+            ),
+          ),
         ),
         FFRoute(
           name: 'PostPage',
           path: '/postPage',
-          builder: (context, params) => const PostPageWidget(),
+          builder: (context, params) => PostPageWidget(
+            boardpostaparam: params.getParam(
+              'boardpostaparam',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['postpage'],
+            ),
+            cateparam: params.getParam(
+              'cateparam',
+              ParamType.String,
+            ),
+          ),
         ),
         FFRoute(
           name: 'LoginSignupPage',
@@ -153,7 +173,43 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'ApplicantListPage',
           path: '/applicantListPage',
-          builder: (context, params) => const ApplicantListPageWidget(),
+          builder: (context, params) => ApplicantListPageWidget(
+            posttitlelist: params.getParam(
+              'posttitlelist',
+              ParamType.String,
+            ),
+            postwriterlist: params.getParam(
+              'postwriterlist',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'ApplicantListDetailPage',
+          path: '/applicantListDetailPage',
+          builder: (context, params) => ApplicantListDetailPageWidget(
+            applistapplidetailparam: params.getParam(
+              'applistapplidetailparam',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['applicantpage'],
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'OnboardingPage',
+          path: '/onboardingPage',
+          builder: (context, params) => const OnboardingPageWidget(),
+        ),
+        FFRoute(
+          name: 'MyApplyPage',
+          path: '/myApplyPage',
+          builder: (context, params) => const MyApplyPageWidget(),
+        ),
+        FFRoute(
+          name: 'MyArticlesPage',
+          path: '/myArticlesPage',
+          builder: (context, params) => const MyArticlesPageWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -326,7 +382,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/loginSignupPage';
+            return '/onboardingPage';
           }
           return null;
         },
@@ -351,7 +407,7 @@ class FFRoute {
                     ),
                   ),
                 )
-              : page;
+              : PushNotificationsHandler(child: page);
 
           final transitionInfo = state.transitionInfo;
           return transitionInfo.hasTransition

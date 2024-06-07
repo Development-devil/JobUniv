@@ -54,11 +54,6 @@ class UserprofileRecord extends FirestoreRecord {
   List<String> get skills => _skills ?? const [];
   bool hasSkills() => _skills != null;
 
-  // "myself" field.
-  String? _myself;
-  String get myself => _myself ?? '';
-  bool hasMyself() => _myself != null;
-
   // "phone_number" field.
   String? _phoneNumber;
   String get phoneNumber => _phoneNumber ?? '';
@@ -73,7 +68,6 @@ class UserprofileRecord extends FirestoreRecord {
     _department = snapshotData['department'] as String?;
     _university = snapshotData['university'] as String?;
     _skills = getDataList(snapshotData['skills']);
-    _myself = snapshotData['myself'] as String?;
     _phoneNumber = snapshotData['phone_number'] as String?;
   }
 
@@ -119,7 +113,6 @@ Map<String, dynamic> createUserprofileRecordData({
   DateTime? createdTime,
   String? department,
   String? university,
-  String? myself,
   String? phoneNumber,
 }) {
   final firestoreData = mapToFirestore(
@@ -131,7 +124,6 @@ Map<String, dynamic> createUserprofileRecordData({
       'created_time': createdTime,
       'department': department,
       'university': university,
-      'myself': myself,
       'phone_number': phoneNumber,
     }.withoutNulls,
   );
@@ -153,7 +145,6 @@ class UserprofileRecordDocumentEquality implements Equality<UserprofileRecord> {
         e1?.department == e2?.department &&
         e1?.university == e2?.university &&
         listEquality.equals(e1?.skills, e2?.skills) &&
-        e1?.myself == e2?.myself &&
         e1?.phoneNumber == e2?.phoneNumber;
   }
 
@@ -167,7 +158,6 @@ class UserprofileRecordDocumentEquality implements Equality<UserprofileRecord> {
         e?.department,
         e?.university,
         e?.skills,
-        e?.myself,
         e?.phoneNumber
       ]);
 
