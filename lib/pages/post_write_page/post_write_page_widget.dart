@@ -12,7 +12,12 @@ import 'post_write_page_model.dart';
 export 'post_write_page_model.dart';
 
 class PostWritePageWidget extends StatefulWidget {
-  const PostWritePageWidget({super.key});
+  const PostWritePageWidget({
+    super.key,
+    this.postpageDoc,
+  });
+
+  final PostpageRecord? postpageDoc;
 
   @override
   State<PostWritePageWidget> createState() => _PostWritePageWidgetState();
@@ -28,19 +33,24 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
     super.initState();
     _model = createModel(context, () => PostWritePageModel());
 
-    _model.textController1 ??= TextEditingController();
+    _model.textController1 ??=
+        TextEditingController(text: widget.postpageDoc?.title);
     _model.textFieldFocusNode1 ??= FocusNode();
 
-    _model.textController2 ??= TextEditingController();
+    _model.textController2 ??=
+        TextEditingController(text: widget.postpageDoc?.contents);
     _model.textFieldFocusNode2 ??= FocusNode();
 
-    _model.textController3 ??= TextEditingController();
+    _model.textController3 ??=
+        TextEditingController(text: widget.postpageDoc?.careerFields);
     _model.textFieldFocusNode3 ??= FocusNode();
 
-    _model.textController4 ??= TextEditingController();
+    _model.textController4 ??=
+        TextEditingController(text: widget.postpageDoc?.count.toString());
     _model.textFieldFocusNode4 ??= FocusNode();
 
-    _model.textController5 ??= TextEditingController();
+    _model.textController5 ??=
+        TextEditingController(text: widget.postpageDoc?.requiredSkills);
     _model.textFieldFocusNode5 ??= FocusNode();
   }
 
@@ -123,7 +133,8 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
                       },
                     ),
                   });
-                  context.safePop();
+
+                  context.pushNamed('HomePage');
                 },
                 text: 'Done',
                 options: FFButtonOptions(

@@ -111,7 +111,12 @@ final parametersBuilderMap =
   'HomePage': ParameterData.none(),
   'CategoryPage': ParameterData.none(),
   'ProfilePage': ParameterData.none(),
-  'PostWritePage': ParameterData.none(),
+  'PostWritePage': (data) async => ParameterData(
+        allParams: {
+          'postpageDoc': await getDocumentParameter<PostpageRecord>(
+              data, 'postpageDoc', PostpageRecord.fromSnapshot),
+        },
+      ),
   'ApplyPage': (data) async => ParameterData(
         allParams: {
           'posttitle': getParameter<String>(data, 'posttitle'),
