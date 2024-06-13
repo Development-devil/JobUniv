@@ -19,6 +19,7 @@ class PostStruct extends FFFirebaseStruct {
   DateTime? _initialPosttime;
   DateTime? get initialPosttime => _initialPosttime;
   set initialPosttime(DateTime? val) => _initialPosttime = val;
+
   bool hasInitialPosttime() => _initialPosttime != null;
 
   static PostStruct fromMap(Map<String, dynamic> data) => PostStruct(

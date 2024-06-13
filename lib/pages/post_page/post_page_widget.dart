@@ -680,8 +680,17 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                               const EdgeInsetsDirectional.fromSTEB(
                                                   0.0, 0.0, 8.0, 0.0),
                                           child: FFButtonWidget(
-                                            onPressed: () {
-                                              print('Button pressed ...');
+                                            onPressed: () async {
+                                              context.pushNamed(
+                                                'PostPage',
+                                                queryParameters: {
+                                                  'boardpostaparam':
+                                                      serializeParam(
+                                                    widget.boardpostaparam,
+                                                    ParamType.DocumentReference,
+                                                  ),
+                                                }.withoutNulls,
+                                              );
                                             },
                                             text: '수정',
                                             options: FFButtonOptions(

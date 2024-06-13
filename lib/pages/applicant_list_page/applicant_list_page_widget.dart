@@ -248,16 +248,10 @@ class _ApplicantListPageWidgetState extends State<ApplicantListPageWidget> {
                                         ),
                                       ),
                                     ),
-                                    StreamBuilder<List<UserprofileRecord>>(
-                                      stream: queryUserprofileRecord(
-                                        queryBuilder: (userprofileRecord) =>
-                                            userprofileRecord.where(
-                                          'display_name',
-                                          isEqualTo:
-                                              columnApplicantpageRecord.name,
-                                        ),
-                                        singleRecord: true,
-                                      ),
+                                    StreamBuilder<PostpageRecord>(
+                                      stream: PostpageRecord.getDocument(
+                                          columnApplicantpageRecord
+                                              .postpageRef!),
                                       builder: (context, snapshot) {
                                         // Customize what your widget looks like when it's loading.
                                         if (!snapshot.hasData) {
@@ -276,34 +270,30 @@ class _ApplicantListPageWidgetState extends State<ApplicantListPageWidget> {
                                             ),
                                           );
                                         }
-                                        List<UserprofileRecord>
-                                            buttonUserprofileRecordList =
+                                        final buttonPostpageRecord =
                                             snapshot.data!;
-                                        // Return an empty Container when the item does not exist.
-                                        if (snapshot.data!.isEmpty) {
-                                          return Container();
-                                        }
-                                        final buttonUserprofileRecord =
-                                            buttonUserprofileRecordList
-                                                    .isNotEmpty
-                                                ? buttonUserprofileRecordList
-                                                    .first
-                                                : null;
                                         return FFButtonWidget(
                                           onPressed: () async {
                                             triggerPushNotification(
-                                              notificationTitle: '합격 축하드립니다!',
+                                              notificationTitle: '합격을 축하드립니다.',
                                               notificationText:
-                                                  '지원자께서는 합격하셨습니다.',
+                                                  '지원하신 글에 합격하셨습니다.',
                                               userRefs: [
                                                 columnApplicantpageRecord
                                                     .singleUser!
                                               ],
-                                              initialPageName: 'MyApplyPage',
-                                              parameterData: {},
+                                              initialPageName: 'PostPage',
+                                              parameterData: {
+                                                'boardpostaparam':
+                                                    buttonPostpageRecord
+                                                        .reference,
+                                                'cateparam':
+                                                    buttonPostpageRecord
+                                                        .category,
+                                              },
                                             );
                                           },
-                                          text: '합격 통보',
+                                          text: '신청 수락',
                                           options: FFButtonOptions(
                                             height: 22.0,
                                             padding:

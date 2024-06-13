@@ -115,24 +115,36 @@ class _PostWritePageWidgetState extends State<PostWritePageWidget> {
               padding: const EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 12.0, 12.0),
               child: FFButtonWidget(
                 onPressed: () async {
-                  await PostpageRecord.collection.doc().set({
-                    ...createPostpageRecordData(
-                      category: _model.radioButtonValue,
+                  if (widget.postpageDoc != null) {
+                    await widget.postpageDoc!.reference
+                        .update(createPostpageRecordData(
                       title: _model.textController1.text,
                       contents: _model.textController2.text,
                       careerFields: _model.textController3.text,
-                      count: int.tryParse(_model.textController4.text),
                       requiredSkills: _model.textController5.text,
-                      viewcount: 0,
-                      likecount: 0,
-                      userRefer: currentUserReference,
-                    ),
-                    ...mapToFirestore(
-                      {
-                        'day': FieldValue.serverTimestamp(),
-                      },
-                    ),
-                  });
+                      category: _model.radioButtonValue,
+                      count: int.tryParse(_model.textController4.text),
+                    ));
+                  } else {
+                    await PostpageRecord.collection.doc().set({
+                      ...createPostpageRecordData(
+                        category: _model.radioButtonValue,
+                        title: _model.textController1.text,
+                        contents: _model.textController2.text,
+                        careerFields: _model.textController3.text,
+                        count: int.tryParse(_model.textController4.text),
+                        requiredSkills: _model.textController5.text,
+                        viewcount: 0,
+                        likecount: 0,
+                        userRefer: currentUserReference,
+                      ),
+                      ...mapToFirestore(
+                        {
+                          'day': FieldValue.serverTimestamp(),
+                        },
+                      ),
+                    });
+                  }
 
                   context.pushNamed('HomePage');
                 },
