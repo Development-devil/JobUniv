@@ -26,7 +26,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   auto_size_text: 3.0.0
-  badges: 2.0.2
   blurhash_dart: 1.2.1
   cached_network_image: 3.3.1
   cloud_firestore: 4.15.7
@@ -37,6 +36,7 @@ dependencies:
   cloud_functions_web: 4.7.1
   collection: 1.18.0
   easy_debounce: 2.0.1
+  equatable: 2.0.5
   file_picker: 6.1.1
   firebase_auth: 4.17.7
   firebase_auth_platform_interface: 7.1.7
@@ -53,6 +53,7 @@ dependencies:
   firebase_storage: 11.6.8
   firebase_storage_platform_interface: 5.1.11
   firebase_storage_web: 3.7.2
+  floating_bottom_navigation_bar: 1.5.2
   flutter_animate: 4.1.1+1
   flutter_cache_manager: 3.3.1
   flutter_plugin_android_lifecycle: 2.0.17
@@ -65,6 +66,7 @@ dependencies:
   google_sign_in_ios: 5.6.4
   google_sign_in_platform_interface: 2.4.2
   google_sign_in_web: 0.12.1
+  http: 1.2.0
   image: 4.0.17
   image_picker: 1.0.4
   image_picker_android: 0.8.8

@@ -5,7 +5,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/upload_data.dart';
-import 'dart:async';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -351,14 +351,16 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                           size: 18.0,
                         ),
                         onPressed: () async {
-                          await currentUserReference!.update({
-                            ...mapToFirestore(
-                              {
-                                'skills': FieldValue.arrayUnion(
-                                    [_model.skillstackTextController.text]),
-                              },
-                            ),
-                          });
+                          if (_model.skillstackTextController.text != '') {
+                            await currentUserReference!.update({
+                              ...mapToFirestore(
+                                {
+                                  'skills': FieldValue.arrayUnion(
+                                      [_model.skillstackTextController.text]),
+                                },
+                              ),
+                            });
+                          }
                         },
                       ),
                     ],
@@ -393,17 +395,39 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                                 itemCount: skills.length,
                                 itemBuilder: (context, skillsIndex) {
                                   final skillsItem = skills[skillsIndex];
-                                  return ListTile(
-                                    title: Text(
-                                      skillsItem,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            letterSpacing: 0.0,
-                                          ),
+                                  return InkWell(
+                                    splashColor: Colors.transparent,
+                                    focusColor: Colors.transparent,
+                                    hoverColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onTap: () async {
+                                      await currentUserReference!.update({
+                                        ...mapToFirestore(
+                                          {
+                                            'skills': FieldValue.arrayRemove(
+                                                [skillsItem]),
+                                          },
+                                        ),
+                                      });
+                                    },
+                                    child: ListTile(
+                                      title: Text(
+                                        skillsItem,
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
+                                      trailing: Icon(
+                                        Icons.close,
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        size: 20.0,
+                                      ),
+                                      dense: false,
                                     ),
-                                    dense: false,
                                   );
                                 },
                               );
@@ -414,57 +438,186 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: const AlignmentDirectional(-1.0, 0.0),
-                  child: Padding(
-                    padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
-                    child: InkWell(
-                      splashColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onTap: () async {
-                        GoRouter.of(context).prepareAuthEvent();
-                        await authManager.signOut();
-                        GoRouter.of(context).clearRedirectLocation();
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 72.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Align(
+                        alignment: const AlignmentDirectional(-1.0, 0.0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 12.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              var confirmDialogResponse =
+                                  await showDialog<bool>(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: const Text('로그아웃'),
+                                            content: const Text('로그아웃 하시겠습니까?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, false),
+                                                child: const Text('취소'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, true),
+                                                child: const Text('로그아웃'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ) ??
+                                      false;
+                              if (confirmDialogResponse) {
+                                GoRouter.of(context).prepareAuthEvent();
+                                await authManager.signOut();
+                                GoRouter.of(context).clearRedirectLocation();
 
-                        context.goNamedAuth('LoginSignupPage', context.mounted);
-                      },
-                      child: Text(
-                        '로그아웃',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              letterSpacing: 0.0,
+                                context.goNamedAuth(
+                                    'LoginSignupPage', context.mounted);
+                              }
+                            },
+                            child: Text(
+                              '로그아웃',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                             ),
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: const AlignmentDirectional(-1.0, 0.0),
-                  child: InkWell(
-                    splashColor: Colors.transparent,
-                    focusColor: Colors.transparent,
-                    hoverColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                    onTap: () async {
-                      await authManager.deleteUser(context);
-                      unawaited(
-                        () async {
-                          await currentUserReference!.delete();
-                        }(),
-                      );
-
-                      context.pushNamed('OnboardingPage');
-                    },
-                    child: Text(
-                      '회원 탈퇴',
-                      style: FlutterFlowTheme.of(context).bodyMedium.override(
-                            fontFamily: 'Readex Pro',
-                            letterSpacing: 0.0,
                           ),
-                    ),
+                        ),
+                      ),
+                      Align(
+                        alignment: const AlignmentDirectional(-1.0, 0.0),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 14.0),
+                          child: InkWell(
+                            splashColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () async {
+                              var confirmDialogResponse =
+                                  await showDialog<bool>(
+                                        context: context,
+                                        builder: (alertDialogContext) {
+                                          return AlertDialog(
+                                            title: const Text('회원탈퇴'),
+                                            content: const Text('정말 회원탈퇴 하시겠습니까?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, false),
+                                                child: const Text('취소'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    alertDialogContext, true),
+                                                child: const Text('탈퇴'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ) ??
+                                      false;
+                              if (confirmDialogResponse) {
+                                await Future.wait([
+                                  Future(() async {
+                                    // query postpages written by such user
+                                    _model.queriedPosts =
+                                        await queryPostpageRecordOnce(
+                                      queryBuilder: (postpageRecord) =>
+                                          postpageRecord.where(
+                                        'userRefer',
+                                        isEqualTo: currentUserReference,
+                                      ),
+                                    );
+                                  }),
+                                  Future(() async {
+                                    // query applicantpages written by such user
+                                    _model.queriedApplicant =
+                                        await queryApplicantpageRecordOnce(
+                                      queryBuilder: (applicantpageRecord) =>
+                                          applicantpageRecord.where(
+                                        'singleUser',
+                                        isEqualTo: currentUserReference,
+                                      ),
+                                    );
+                                  }),
+                                ]);
+                                _model.userpostscount = 0;
+                                _model.lessthancond =
+                                    _model.queriedPosts!.length;
+                                while (_model.userpostscount <
+                                    _model.lessthancond) {
+                                  await actions.consolelogString(
+                                    _model.queriedPosts?[_model.userpostscount]
+                                        .title,
+                                  );
+                                  await actions.delelteSubDocuments(
+                                    _model.queriedPosts![_model.userpostscount]
+                                        .reference,
+                                    'applicantpage',
+                                  );
+                                  await _model
+                                      .queriedPosts![_model.userpostscount]
+                                      .reference
+                                      .delete();
+                                  _model.userpostscount =
+                                      _model.userpostscount + 1;
+                                }
+                                _model.userpostscount = 0;
+                                _model.lessthancond =
+                                    _model.queriedApplicant!.length;
+                                while (_model.userpostscount <
+                                    _model.lessthancond) {
+                                  await actions.consolelogString(
+                                    _model
+                                        .queriedApplicant?[
+                                            _model.userpostscount]
+                                        .motive,
+                                  );
+                                  await _model
+                                      .queriedApplicant![_model.userpostscount]
+                                      .reference
+                                      .delete();
+                                  _model.userpostscount =
+                                      _model.userpostscount + 1;
+                                }
+
+                                context.goNamed('LoginSignupPage');
+
+                                await authManager.deleteUser(context);
+                                await currentUserReference!.delete();
+                              }
+
+                              setState(() {});
+                            },
+                            child: Text(
+                              '회원 탈퇴',
+                              style: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

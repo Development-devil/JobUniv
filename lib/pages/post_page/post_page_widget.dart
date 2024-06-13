@@ -89,64 +89,60 @@ class _PostPageWidgetState extends State<PostPageWidget> {
               ),
               child: Align(
                 alignment: const AlignmentDirectional(1.0, 1.0),
-                child: StreamBuilder<UserprofileRecord>(
-                  stream: UserprofileRecord.getDocument(
-                      postPagePostpageRecord.userRefer!),
-                  builder: (context, snapshot) {
-                    // Customize what your widget looks like when it's loading.
-                    if (!snapshot.hasData) {
-                      return Center(
-                        child: SizedBox(
-                          width: 50.0,
-                          height: 50.0,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              FlutterFlowTheme.of(context).primary,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 48.0),
+                  child: StreamBuilder<UserprofileRecord>(
+                    stream: UserprofileRecord.getDocument(
+                        postPagePostpageRecord.userRefer!),
+                    builder: (context, snapshot) {
+                      // Customize what your widget looks like when it's loading.
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: SizedBox(
+                            width: 50.0,
+                            height: 50.0,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                FlutterFlowTheme.of(context).primary,
+                              ),
                             ),
                           ),
+                        );
+                      }
+                      final floatingActionButtonUserprofileRecord =
+                          snapshot.data!;
+                      return FloatingActionButton.extended(
+                        onPressed: () async {
+                          _model.useRefer =
+                              await UserprofileRecord.getDocumentOnce(
+                                  postPagePostpageRecord.userRefer!);
+
+                          context.pushNamed(
+                            'ApplyPage',
+                            queryParameters: {
+                              'postpageRef': serializeParam(
+                                widget.boardpostaparam,
+                                ParamType.DocumentReference,
+                              ),
+                            }.withoutNulls,
+                          );
+
+                          setState(() {});
+                        },
+                        backgroundColor: const Color(0xFF1AB74F),
+                        elevation: 2.0,
+                        label: Text(
+                          '지원하기',
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    color: Colors.white,
+                                    letterSpacing: 0.0,
+                                  ),
                         ),
                       );
-                    }
-                    final floatingActionButtonUserprofileRecord =
-                        snapshot.data!;
-                    return FloatingActionButton.extended(
-                      onPressed: () async {
-                        _model.useRefer =
-                            await UserprofileRecord.getDocumentOnce(
-                                postPagePostpageRecord.userRefer!);
-
-                        context.pushNamed(
-                          'ApplyPage',
-                          queryParameters: {
-                            'posttitle': serializeParam(
-                              postPagePostpageRecord.title,
-                              ParamType.String,
-                            ),
-                            'postwriter': serializeParam(
-                              _model.useRefer?.displayName,
-                              ParamType.String,
-                            ),
-                            'postpageRef': serializeParam(
-                              widget.boardpostaparam,
-                              ParamType.DocumentReference,
-                            ),
-                          }.withoutNulls,
-                        );
-
-                        setState(() {});
-                      },
-                      backgroundColor: const Color(0xFF1AB74F),
-                      elevation: 2.0,
-                      label: Text(
-                        '지원하기',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              color: Colors.white,
-                              letterSpacing: 0.0,
-                            ),
-                      ),
-                    );
-                  },
+                    },
+                  ),
                 ),
               ),
             ),
@@ -473,19 +469,10 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                     StreamBuilder<List<ApplicantpageRecord>>(
                                       stream: queryApplicantpageRecord(
                                         queryBuilder: (applicantpageRecord) =>
-                                            applicantpageRecord
-                                                .where(
-                                                  'posttitle',
-                                                  isEqualTo:
-                                                      postPagePostpageRecord
-                                                          .title,
-                                                )
-                                                .where(
-                                                  'postwriter',
-                                                  isEqualTo:
-                                                      columnUserprofileRecord
-                                                          .displayName,
-                                                ),
+                                            applicantpageRecord.where(
+                                          'postpageRef',
+                                          isEqualTo: widget.boardpostaparam,
+                                        ),
                                       ),
                                       builder: (context, snapshot) {
                                         // Customize what your widget looks like when it's loading.
@@ -682,14 +669,21 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                           child: FFButtonWidget(
                                             onPressed: () async {
                                               context.pushNamed(
-                                                'PostPage',
+                                                'PostWritePage',
                                                 queryParameters: {
-                                                  'boardpostaparam':
-                                                      serializeParam(
-                                                    widget.boardpostaparam,
-                                                    ParamType.DocumentReference,
+                                                  'postpageDoc': serializeParam(
+                                                    postPagePostpageRecord,
+                                                    ParamType.Document,
+                                                  ),
+                                                  'category': serializeParam(
+                                                    widget.cateparam,
+                                                    ParamType.String,
                                                   ),
                                                 }.withoutNulls,
+                                                extra: <String, dynamic>{
+                                                  'postpageDoc':
+                                                      postPagePostpageRecord,
+                                                },
                                               );
                                             },
                                             text: '수정',
@@ -788,17 +782,10 @@ class _PostPageWidgetState extends State<PostPageWidget> {
                                               context.pushNamed(
                                                 'ApplicantListPage',
                                                 queryParameters: {
-                                                  'posttitlelist':
+                                                  'postapplyRef':
                                                       serializeParam(
-                                                    postPagePostpageRecord
-                                                        .title,
-                                                    ParamType.String,
-                                                  ),
-                                                  'postwriterlist':
-                                                      serializeParam(
-                                                    columnUserprofileRecord
-                                                        .displayName,
-                                                    ParamType.String,
+                                                    widget.boardpostaparam,
+                                                    ParamType.DocumentReference,
                                                   ),
                                                 }.withoutNulls,
                                               );

@@ -252,6 +252,7 @@ class _MyArticlesPageWidgetState extends State<MyArticlesPageWidget> {
                                             child: Text(
                                               columnPostpageRecord.contents,
                                               textAlign: TextAlign.start,
+                                              maxLines: 3,
                                               style:
                                                   FlutterFlowTheme.of(context)
                                                       .labelMedium

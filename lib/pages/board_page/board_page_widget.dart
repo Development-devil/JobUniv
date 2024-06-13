@@ -63,19 +63,37 @@ class _BoardPageWidgetState extends State<BoardPageWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: const Color(0xFFF9F9F9),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            context.pushNamed('PostWritePage');
-          },
-          backgroundColor: const Color(0xFF1AB74F),
-          elevation: 2.0,
-          label: Text(
-            '글 작성하기',
-            style: FlutterFlowTheme.of(context).bodyMedium.override(
-                  fontFamily: 'Readex Pro',
-                  color: Colors.white,
-                  letterSpacing: 0.0,
-                ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 48.0),
+          child: FloatingActionButton.extended(
+            onPressed: () async {
+              context.pushNamed(
+                'PostWritePage',
+                queryParameters: {
+                  'postpageDoc': serializeParam(
+                    null,
+                    ParamType.Document,
+                  ),
+                  'category': serializeParam(
+                    widget.categoryparam,
+                    ParamType.String,
+                  ),
+                }.withoutNulls,
+                extra: <String, dynamic>{
+                  'postpageDoc': null,
+                },
+              );
+            },
+            backgroundColor: const Color(0xFF1AB74F),
+            elevation: 2.0,
+            label: Text(
+              '글 작성하기',
+              style: FlutterFlowTheme.of(context).bodyMedium.override(
+                    fontFamily: 'Readex Pro',
+                    color: Colors.white,
+                    letterSpacing: 0.0,
+                  ),
+            ),
           ),
         ),
         appBar: AppBar(

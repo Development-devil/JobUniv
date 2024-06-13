@@ -602,8 +602,8 @@ class _ApplicantListDetailPageWidgetState
                     Align(
                       alignment: const AlignmentDirectional(1.0, 0.0),
                       child: Padding(
-                        padding:
-                            const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 8.0, 0.0),
+                        padding: const EdgeInsetsDirectional.fromSTEB(
+                            0.0, 24.0, 8.0, 48.0),
                         child: FFButtonWidget(
                           onPressed: () async {
                             await columnApplicantpageRecord.reference

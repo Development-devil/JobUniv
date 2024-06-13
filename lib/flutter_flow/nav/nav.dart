@@ -89,7 +89,10 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/homePage',
           builder: (context, params) => params.isEmpty
               ? const NavBarPage(initialPage: 'HomePage')
-              : const HomePageWidget(),
+              : const NavBarPage(
+                  initialPage: 'HomePage',
+                  page: HomePageWidget(),
+                ),
         ),
         FFRoute(
           name: 'CategoryPage',
@@ -111,64 +114,80 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           asyncParams: {
             'postpageDoc': getDoc(['postpage'], PostpageRecord.fromSnapshot),
           },
-          builder: (context, params) => PostWritePageWidget(
-            postpageDoc: params.getParam(
-              'postpageDoc',
-              ParamType.Document,
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: PostWritePageWidget(
+              postpageDoc: params.getParam(
+                'postpageDoc',
+                ParamType.Document,
+              ),
+              category: params.getParam(
+                'category',
+                ParamType.String,
+              ),
             ),
           ),
         ),
         FFRoute(
           name: 'ApplyPage',
           path: '/applyPage',
-          builder: (context, params) => ApplyPageWidget(
-            posttitle: params.getParam(
-              'posttitle',
-              ParamType.String,
-            ),
-            postwriter: params.getParam(
-              'postwriter',
-              ParamType.String,
-            ),
-            postpageRef: params.getParam(
-              'postpageRef',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['postpage'],
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: ApplyPageWidget(
+              posttitle: params.getParam(
+                'posttitle',
+                ParamType.String,
+              ),
+              postwriter: params.getParam(
+                'postwriter',
+                ParamType.String,
+              ),
+              postpageRef: params.getParam(
+                'postpageRef',
+                ParamType.DocumentReference,
+                isList: false,
+                collectionNamePath: ['postpage'],
+              ),
             ),
           ),
         ),
         FFRoute(
           name: 'BoardPage',
           path: '/boardPage',
-          builder: (context, params) => BoardPageWidget(
-            categoryparam: params.getParam(
-              'categoryparam',
-              ParamType.String,
-            ),
-            sortBy: params.getParam(
-              'sortBy',
-              ParamType.String,
-            ),
-            sortkeytype: params.getParam(
-              'sortkeytype',
-              ParamType.int,
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: BoardPageWidget(
+              categoryparam: params.getParam(
+                'categoryparam',
+                ParamType.String,
+              ),
+              sortBy: params.getParam(
+                'sortBy',
+                ParamType.String,
+              ),
+              sortkeytype: params.getParam(
+                'sortkeytype',
+                ParamType.int,
+              ),
             ),
           ),
         ),
         FFRoute(
           name: 'PostPage',
           path: '/postPage',
-          builder: (context, params) => PostPageWidget(
-            boardpostaparam: params.getParam(
-              'boardpostaparam',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['postpage'],
-            ),
-            cateparam: params.getParam(
-              'cateparam',
-              ParamType.String,
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: PostPageWidget(
+              boardpostaparam: params.getParam(
+                'boardpostaparam',
+                ParamType.DocumentReference,
+                isList: false,
+                collectionNamePath: ['postpage'],
+              ),
+              cateparam: params.getParam(
+                'cateparam',
+                ParamType.String,
+              ),
             ),
           ),
         ),
@@ -180,26 +199,38 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'ApplicantListPage',
           path: '/applicantListPage',
-          builder: (context, params) => ApplicantListPageWidget(
-            posttitlelist: params.getParam(
-              'posttitlelist',
-              ParamType.String,
-            ),
-            postwriterlist: params.getParam(
-              'postwriterlist',
-              ParamType.String,
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: ApplicantListPageWidget(
+              posttitlelist: params.getParam(
+                'posttitlelist',
+                ParamType.String,
+              ),
+              postwriterlist: params.getParam(
+                'postwriterlist',
+                ParamType.String,
+              ),
+              postapplyRef: params.getParam(
+                'postapplyRef',
+                ParamType.DocumentReference,
+                isList: false,
+                collectionNamePath: ['postpage'],
+              ),
             ),
           ),
         ),
         FFRoute(
           name: 'ApplicantListDetailPage',
           path: '/applicantListDetailPage',
-          builder: (context, params) => ApplicantListDetailPageWidget(
-            applistapplidetailparam: params.getParam(
-              'applistapplidetailparam',
-              ParamType.DocumentReference,
-              isList: false,
-              collectionNamePath: ['applicantpage'],
+          builder: (context, params) => NavBarPage(
+            initialPage: '',
+            page: ApplicantListDetailPageWidget(
+              applistapplidetailparam: params.getParam(
+                'applistapplidetailparam',
+                ParamType.DocumentReference,
+                isList: false,
+                collectionNamePath: ['applicantpage'],
+              ),
             ),
           ),
         ),
@@ -211,12 +242,18 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'MyApplyPage',
           path: '/myApplyPage',
-          builder: (context, params) => const MyApplyPageWidget(),
+          builder: (context, params) => const NavBarPage(
+            initialPage: '',
+            page: MyApplyPageWidget(),
+          ),
         ),
         FFRoute(
           name: 'MyArticlesPage',
           path: '/myArticlesPage',
-          builder: (context, params) => const MyArticlesPageWidget(),
+          builder: (context, params) => const NavBarPage(
+            initialPage: '',
+            page: MyArticlesPageWidget(),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

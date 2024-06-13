@@ -115,6 +115,7 @@ final parametersBuilderMap =
         allParams: {
           'postpageDoc': await getDocumentParameter<PostpageRecord>(
               data, 'postpageDoc', PostpageRecord.fromSnapshot),
+          'category': getParameter<String>(data, 'category'),
         },
       ),
   'ApplyPage': (data) async => ParameterData(
@@ -143,6 +144,7 @@ final parametersBuilderMap =
         allParams: {
           'posttitlelist': getParameter<String>(data, 'posttitlelist'),
           'postwriterlist': getParameter<String>(data, 'postwriterlist'),
+          'postapplyRef': getParameter<DocumentReference>(data, 'postapplyRef'),
         },
       ),
   'ApplicantListDetailPage': (data) async => ParameterData(

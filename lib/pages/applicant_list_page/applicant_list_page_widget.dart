@@ -12,10 +12,12 @@ class ApplicantListPageWidget extends StatefulWidget {
     super.key,
     this.posttitlelist,
     this.postwriterlist,
+    required this.postapplyRef,
   });
 
   final String? posttitlelist;
   final String? postwriterlist;
+  final DocumentReference? postapplyRef;
 
   @override
   State<ApplicantListPageWidget> createState() =>
@@ -86,15 +88,11 @@ class _ApplicantListPageWidgetState extends State<ApplicantListPageWidget> {
             padding: const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
             child: StreamBuilder<List<ApplicantpageRecord>>(
               stream: queryApplicantpageRecord(
-                queryBuilder: (applicantpageRecord) => applicantpageRecord
-                    .where(
-                      'postwriter',
-                      isEqualTo: widget.postwriterlist,
-                    )
-                    .where(
-                      'posttitle',
-                      isEqualTo: widget.posttitlelist,
-                    ),
+                queryBuilder: (applicantpageRecord) =>
+                    applicantpageRecord.where(
+                  'postpageRef',
+                  isEqualTo: widget.postapplyRef,
+                ),
               ),
               builder: (context, snapshot) {
                 // Customize what your widget looks like when it's loading.
@@ -187,6 +185,7 @@ class _ApplicantListPageWidgetState extends State<ApplicantListPageWidget> {
                                         0.0, 0.0, 0.0, 8.0),
                                     child: Text(
                                       columnApplicantpageRecord.motive,
+                                      maxLines: 3,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
                                           .override(
@@ -278,6 +277,7 @@ class _ApplicantListPageWidgetState extends State<ApplicantListPageWidget> {
                                               notificationTitle: '합격을 축하드립니다.',
                                               notificationText:
                                                   '지원하신 글에 합격하셨습니다.',
+                                              notificationSound: 'default',
                                               userRefs: [
                                                 columnApplicantpageRecord
                                                     .singleUser!

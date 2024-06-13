@@ -188,6 +188,7 @@ class _MyApplyPageWidgetState extends State<MyApplyPageWidget> {
                                                   0.0, 0.0, 0.0, 8.0),
                                           child: Text(
                                             columnApplicantpageRecord.motive,
+                                            maxLines: 3,
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyMedium
                                                 .override(

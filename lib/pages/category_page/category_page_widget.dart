@@ -94,7 +94,7 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
                       color: Color(0xFF6BA1E1),
                     ),
                     title: Text(
-                      'My articles',
+                      '내가 쓴 글',
                       textAlign: TextAlign.start,
                       style: FlutterFlowTheme.of(context).titleLarge.override(
                             fontFamily: 'Outfit',
@@ -119,7 +119,7 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
                       color: Color(0xFF30CA93),
                     ),
                     title: Text(
-                      'My applys',
+                      '내가 쓴 지원서',
                       textAlign: TextAlign.start,
                       style: FlutterFlowTheme.of(context).titleLarge.override(
                             fontFamily: 'Outfit',

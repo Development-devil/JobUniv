@@ -4,6 +4,12 @@ import 'profile_page_widget.dart' show ProfilePageWidget;
 import 'package:flutter/material.dart';
 
 class ProfilePageModel extends FlutterFlowModel<ProfilePageWidget> {
+  ///  Local state fields for this page.
+
+  int userpostscount = 0;
+
+  int lessthancond = 0;
+
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -18,6 +24,10 @@ class ProfilePageModel extends FlutterFlowModel<ProfilePageWidget> {
   FocusNode? skillstackFocusNode;
   TextEditingController? skillstackTextController;
   String? Function(BuildContext, String?)? skillstackTextControllerValidator;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  List<PostpageRecord>? queriedPosts;
+  // Stores action output result for [Firestore Query - Query a collection] action in Text widget.
+  List<ApplicantpageRecord>? queriedApplicant;
 
   @override
   void initState(BuildContext context) {}
